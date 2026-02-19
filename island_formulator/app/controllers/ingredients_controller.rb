@@ -21,7 +21,10 @@ class IngredientsController < ApplicationController
 
   # POST /ingredients or /ingredients.json
   def create
-    @ingredient = Ingredient.new(ingredient_params)
+    Rails.logger.debug "DEBUG: Current.user = #{Current.user.inspect}"
+  Rails.logger.debug "DEBUG: Current.user = #{Current.user.inspect}"
+    @ingredient = Current.user.ingredients.build(ingredient_params)
+
 
     respond_to do |format|
       if @ingredient.save
