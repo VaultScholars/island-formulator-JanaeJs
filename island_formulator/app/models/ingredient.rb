@@ -1,5 +1,6 @@
 class Ingredient < ApplicationRecord
   belongs_to :user
+  has_one_attached :photo
   
   # Add these two lines:
   # This allows us to say @ingredient.tags and get a list of all tags!

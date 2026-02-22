@@ -71,6 +71,6 @@ class IngredientsController < ApplicationController
   # Add tag_ids: [] to the permit list
   # The [] means we are expecting an ARRAY of IDs (since you can check multiple boxes).
   # Note: tag_ids: [] must be the LAST parameter in the permit() call
-  params.expect(ingredient: [ :name, :category, :description, :notes, tag_ids: [] ])
+  params.expect(ingredient: [ :name, :category, :description, :notes, :photo, tag_ids: [] ])
   end
 end
