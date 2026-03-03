@@ -1,14 +1,19 @@
 Rails.application.routes.draw do
+  get "dashboards/show"
+  resources :batches
   resources :recipes
   resource :session
-  
+
   # Manual route definitions for users
-  match '/users/new', to: 'users#new', via: :get, as: 'new_user'
-  match '/users', to: 'users#create', via: :post, as: 'users'
-  
+  match "/users/new", to: "users#new", via: :get, as: "new_user"
+  match "/users", to: "users#create", via: :post, as: "users"
+
+  resources :recipes
   resources :ingredients
-  
-  root "ingredients#index"
-  
+  resources :inventory_items
+  resources :batches, only: [ :index, :show, :new, :create, :destroy ]
+
+  root "dashboards#show"
+
   get "up" => "rails/health#show", as: :rails_health_check
 end
