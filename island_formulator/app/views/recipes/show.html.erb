@@ -1,47 +1,130 @@
-<div class="max-w-4xl mx-auto p-6">
-  <div class="flex justify-between items-start mb-6">
-    <div>
-      <h1 class="text-4xl font-bold text-gray-900"><%= @recipe.title %></h1>
-      <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mt-2 font-semibold uppercase tracking-wide">
-        <%= @recipe.product_type %>
-      </span>
-    </div>
-    <div class="space-x-2">
-      <%= link_to "Edit", edit_recipe_path(@recipe), class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
-      <%= link_to "Back", recipes_path, class: "text-gray-600 hover:underline" %>
-    </div>
+<div class="max-w-6xl mx-auto space-y-8">
+  <!-- Breadcrumb Navigation -->
+  <div class="flex items-center gap-2 text-sm text-gray-600">
+    <%= link_to "Recipes", recipes_path, class: "hover:text-emerald-600 transition-colors" %>
+    <span>→</span>
+    <span class="text-gray-900 font-semibold"><%= @recipe.title %></span>
   </div>
-  
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <div class="md:col-span-1">
-      <% if @recipe.photo.attached? %>
-        <%= image_tag @recipe.photo, class: "w-full h-auto object-cover rounded-xl shadow-lg border-4 border-white" %>
-      <% else %>
-        <div class="w-full h-64 bg-gray-200 rounded-xl flex items-center justify-center text-gray-400 italic">
-          No photo uploaded
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Left Sidebar -->
+    <div class="lg:col-span-1 space-y-6">
+      <!-- Recipe Image -->
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-emerald-100">
+        <% if @recipe.photo.attached? %>
+          <%= image_tag @recipe.photo, class: "w-full h-80 object-cover" %>
+        <% else %>
+          <div class="w-full h-80 bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center">
+            <span class="text-9xl opacity-30">📖</span>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- Product Type Badge -->
+      <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl shadow-xl p-6 text-white text-center">
+        <p class="text-sm font-bold uppercase tracking-wider opacity-80 mb-2">Product Type</p>
+        <p class="text-2xl font-black"><%= @recipe.product_type %></p>
+      </div>
+
+      <!-- Ingredients Card -->
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-emerald-100">
+        <div class="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-4">
+          <h2 class="text-xl font-black text-white flex items-center gap-2">
+            <span>🌿</span> Ingredients
+          </h2>
         </div>
-      <% end %>
-      
-      <div class="mt-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-        <h2 class="text-xl font-bold mb-4 text-gray-800 border-b pb-2">Ingredients</h2>
-        <ul class="space-y-3">
-          <% @recipe.recipe_ingredients.each do |ri| %>
-            <li class="flex justify-between items-center">
-              <span class="font-medium text-gray-700"><%= ri.ingredient.name %></span>
-              <span class="text-gray-500 bg-gray-100 px-2 py-1 rounded text-sm"><%= ri.quantity %></span>
-            </li>
-          <% end %>
-        </ul>
+        <div class="p-6">
+          <ul class="space-y-4">
+            <% @recipe.recipe_ingredients.each do |ri| %>
+              <li class="flex justify-between items-center p-3 bg-emerald-50 rounded-xl hover:bg-emerald-100 transition-colors">
+                <span class="font-bold text-gray-800"><%= ri.ingredient.name %></span>
+                <span class="text-emerald-700 bg-white px-3 py-1 rounded-full text-sm font-bold shadow-sm">
+                  <%= ri.quantity %>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-3">
+        <%= link_to edit_recipe_path(@recipe), class: "w-full flex items-center justify-center gap-2 px-6 py-4 bg-white hover:bg-gray-50 border-2 border-gray-200 text-gray-700 font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all" do %>
+          <span>✏️</span>
+          <span>Edit Recipe</span>
+        <% end %>
+        
+        <%= link_to new_batch_path(recipe_id: @recipe.id), class: "w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all" do %>
+          <span>✨</span>
+          <span>Log a Batch</span>
+        <% end %>
+        
+        <%= link_to recipes_path, class: "w-full flex items-center justify-center gap-2 px-6 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-2xl shadow-lg hover:shadow-xl transition-all" do %>
+          <span>←</span>
+          <span>Back to Recipes</span>
+        <% end %>
       </div>
     </div>
 
-    <div class="md:col-span-2">
-      <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 h-full">
-        <h2 class="text-2xl font-bold mb-4 text-gray-800">Method</h2>
-        <div class="prose prose-green max-w-none text-gray-700 leading-relaxed">
-          <%= simple_format @recipe.method %>
+    <!-- Main Content Area -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Recipe Title Card -->
+      <div class="bg-white rounded-2xl shadow-xl p-8 border-2 border-emerald-100">
+        <h1 class="text-5xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-4">
+          <%= @recipe.title %>
+        </h1>
+        <div class="flex items-center gap-4 text-gray-600">
+          <span class="flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full">
+            <span>🌿</span>
+            <span class="font-semibold"><%= pluralize(@recipe.ingredients.count, 'ingredient') %></span>
+          </span>
+          <span class="flex items-center gap-2 px-4 py-2 bg-teal-50 rounded-full">
+            <span>📅</span>
+            <span class="font-semibold">Created <%= @recipe.created_at.strftime("%b %d, %Y") %></span>
+          </span>
         </div>
       </div>
+
+      <!-- Method Card -->
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-emerald-100">
+        <div class="bg-gradient-to-r from-teal-500 to-cyan-500 px-8 py-5">
+          <h2 class="text-3xl font-black text-white flex items-center gap-3">
+            <span>📝</span> Method
+          </h2>
+        </div>
+        <div class="p-8">
+          <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-4">
+            <%= simple_format(@recipe.method, class: "text-lg") %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Batches Card (if any exist) -->
+      <% if @recipe.batches.any? %>
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border-2 border-purple-100">
+          <div class="bg-gradient-to-r from-purple-500 to-pink-500 px-8 py-5 flex justify-between items-center">
+            <h2 class="text-2xl font-black text-white flex items-center gap-3">
+              <span>✨</span> Production History
+            </h2>
+            <span class="px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full text-white font-bold">
+              <%= pluralize(@recipe.batches.count, 'batch') %>
+            </span>
+          </div>
+          <div class="p-6 divide-y divide-gray-100">
+            <% @recipe.batches.order(made_on: :desc).limit(5).each do |batch| %>
+              <div class="py-4 flex justify-between items-center hover:bg-purple-50 px-4 -mx-4 rounded-xl transition-colors">
+                <div>
+                  <p class="font-bold text-gray-800"><%= batch.made_on.strftime("%B %d, %Y") %></p>
+                  <% if batch.notes.present? %>
+                    <p class="text-sm text-gray-600 italic mt-1">"<%= batch.notes.truncate(50) %>"</p>
+                  <% end %>
+                </div>
+                <%= link_to "View →", batch, class: "text-purple-600 hover:text-purple-700 font-bold" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

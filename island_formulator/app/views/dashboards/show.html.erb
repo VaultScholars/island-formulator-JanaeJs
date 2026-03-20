@@ -7,7 +7,7 @@
       <div class="flex justify-between items-center">
         <div>
           <h1 class="text-5xl font-black mb-3">Welcome back, <%= Current.user.email_address.split('@').first.capitalize %>! 👋</h1>
-          <p class="text-emerald-100 text-xl font-light"><%= Time.now.strftime("%A, %B %d, %Y") %></p>
+          <p class="text-emerald-100 text-xl font-light"><%= Time.now.strftime("%A, %B %d, %Y • %I:%M %p") %></p>
         </div>
         <div class="hidden md:block">
           <div class="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
