@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
@@ -12,4 +12,5 @@ test:
   database: island_formulator_test
 
 production:
+  <<: *default
   url: <%= ENV['DATABASE_URL'] %>
